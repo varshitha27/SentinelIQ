@@ -65,9 +65,22 @@ Azure AI Foundry · GPT-4.1  (all agent reasoning)
 
 ---
 
-## Microsoft AI Foundry Integration
+## GitHub Copilot & AI-Assisted Development
 
-SentinelIQ leverages **Azure AI Foundry with GPT-4.1** for all agent reasoning. Each of the 7 agents sends a structured system + user prompt and receives JSON-formatted analysis that feeds into the next stage of the pipeline — demonstrating real multi-step agentic reasoning over enterprise project data.
+SentinelIQ was built using AI-assisted development throughout the entire project lifecycle:
+
+- **Agent prompt engineering** — Copilot and Kiro IDE accelerated the design of structured system prompts for each of the 7 agents, ensuring consistent JSON output and role-specific reasoning
+- **FastAPI backend scaffolding** — API routes, Pydantic models, and async orchestration patterns were developed with AI assistance
+- **React component development** — Dashboard, reasoning trace panel, and upload UI components built with AI-assisted coding
+- **Multi-agent pipeline design** — The sequential + parallel orchestration pattern was refined through iterative AI-assisted development
+
+This project demonstrates how AI-assisted development tools enable building production-quality multi-agent systems faster and more reliably.
+
+---
+
+## Microsoft AI Foundry Integration — Foundry IQ
+
+SentinelIQ integrates **Foundry IQ** via Azure AI Foundry with GPT-4.1 as the core intelligence layer for all agent reasoning. Each of the 7 agents sends a structured system + user prompt and receives JSON-formatted analysis that feeds into the next stage of the pipeline — demonstrating real multi-step agentic reasoning over enterprise project data.
 
 Every LLM call uses:
 - `response_format: json_object` for reliable structured output
