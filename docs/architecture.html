@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SentinelIQ — Architecture Diagram</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f1117;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  .title {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+  .subtitle {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 48px;
+  }
+
+  .diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    max-width: 860px;
+  }
+
+  /* Boxes */
+  .box {
+    border-radius: 12px;
+    border: 1.5px solid;
+    padding: 12px 20px;
+    text-align: center;
+    position: relative;
+  }
+  .box .label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .box .name {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .box .tech {
+    font-size: 11px;
+    margin-top: 3px;
+    opacity: 0.7;
+  }
+
+  .box-user    { border-color: #334155; background: #1e293b; color: #94a3b8; width: 180px; }
+  .box-front   { border-color: #3730a3; background: #1e1b4b; color: #a5b4fc; width: 240px; }
+  .box-back    { border-color: #065f46; background: #052e16; color: #6ee7b7; width: 240px; }
+  .box-orch    { border-color: #92400e; background: #1c1007; color: #fcd34d; width: 260px; }
+  .box-foundry { border-color: #6d28d9; background: #2e1065; color: #c4b5fd; width: 320px; }
+  .box-agent   { border-color: #1e40af; background: #0c1a3a; color: #93c5fd; width: 150px; padding: 10px 14px; }
+  .box-agent-impact { border-color: #7c3aed; background: #1a0a3a; color: #c4b5fd; width: 200px; }
+  .box-agent-rec    { border-color: #0e7490; background: #061a24; color: #67e8f9; width: 200px; }
+  .box-agent-exec   { border-color: #065f46; background: #052e16; color: #6ee7b7; width: 200px; }
+
+  /* Arrows */
+  .arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 36px;
+    justify-content: center;
+  }
+  .arrow-line {
+    width: 2px;
+    height: 20px;
+    background: #334155;
+  }
+  .arrow-head {
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #334155;
+  }
+  .arrow-label {
+    font-size: 10px;
+    color: #475569;
+    margin-bottom: 2px;
+  }
+
+  /* Agent row */
+  .agent-row {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .agent-row .box-agent .name { font-size: 12px; }
+  .agent-row .box-agent .tech { font-size: 10px; }
+
+  /* Stage label */
+  .stage {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #475569;
+    margin: 6px 0 4px;
+  }
+
+  /* Bracket connector */
+  .bracket {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 700px;
+    justify-content: center;
+    margin: 0;
+  }
+  .bracket-line {
+    height: 20px;
+    border-left: 2px solid #334155;
+    border-right: 2px solid #334155;
+    border-top: 2px solid #334155;
+    flex: 1;
+    max-width: 600px;
+  }
+
+  .footnote {
+    margin-top: 40px;
+    color: #475569;
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.7;
+  }
+  .foundry-badge {
+    display: inline-block;
+    background: #2e1065;
+    border: 1px solid #6d28d9;
+    color: #c4b5fd;
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="title">SentinelIQ — Architecture Diagram</div>
+<div class="subtitle">AI Project Failure Prediction · Microsoft Agents League Hackathon 2026</div>
+
+<div class="diagram">
+
+  <!-- User -->
+  <div class="box box-user">
+    <div class="label">Input</div>
+    <div class="name">👤 Project Manager</div>
+    <div class="tech">Tasks CSV · Meeting Notes · Updates CSV</div>
+  </div>
+
+  <div class="arrow"><div class="arrow-label">HTTP upload</div><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- Frontend -->
+  <div class="box box-front">
+    <div class="label">Frontend</div>
+    <div class="name">⚛️ Next.js Dashboard</div>
+    <div class="tech">React · Tailwind CSS · Recharts</div>
+  </div>
+
+  <div class="arrow"><div class="arrow-label">REST API · JSON</div><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- Backend -->
+  <div class="box box-back">
+    <div class="label">Backend</div>
+    <div class="name">🐍 FastAPI Server</div>
+    <div class="tech">Python · Async · Pydantic</div>
+  </div>
+
+  <div class="arrow"><div class="arrow-label">orchestrates</div><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- Orchestrator -->
+  <div class="box box-orch">
+    <div class="label">Agent Layer</div>
+    <div class="name">🎯 Orchestrator</div>
+    <div class="tech">Async pipeline · Parallel stage 1 · Sequential stages 2–4</div>
+  </div>
+
+  <!-- Stage 1 bracket -->
+  <div class="stage">Stage 1 — Detection (parallel)</div>
+  <div class="bracket"><div class="bracket-line"></div></div>
+
+  <div style="height:8px"></div>
+
+  <!-- Stage 1 agents -->
+  <div class="agent-row">
+    <div class="box box-agent">
+      <div class="name">🔍 Risk Agent</div>
+      <div class="tech">Delays · Blockers</div>
+    </div>
+    <div class="box box-agent">
+      <div class="name">👥 Resource Agent</div>
+      <div class="tech">Capacity · Skills</div>
+    </div>
+    <div class="box box-agent">
+      <div class="name">📋 Scope Agent</div>
+      <div class="tech">Creep · Changes</div>
+    </div>
+    <div class="box box-agent">
+      <div class="name">🔗 Dependency Agent</div>
+      <div class="tech">Vendors · Blockers</div>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-label">findings aggregated</div><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- Scoring -->
+  <div class="box box-orch" style="width:260px">
+    <div class="label">Deterministic</div>
+    <div class="name">📊 Scoring Engine</div>
+    <div class="tech">Health Score = 100 − weighted risk factors</div>
+  </div>
+
+  <!-- Stage 2 -->
+  <div class="arrow"><div class="arrow-label">Stage 2 — Impact</div><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <div class="box box-agent-impact">
+    <div class="name">⚡ Impact Agent</div>
+    <div class="tech">Delay probability · Estimated weeks</div>
+  </div>
+
+  <!-- Stage 3 -->
+  <div class="arrow"><div class="arrow-label">Stage 3 — Actions</div><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <div class="box box-agent-rec">
+    <div class="name">💡 Recommendation Agent</div>
+    <div class="tech">Ranked mitigations · Priority · Effort</div>
+  </div>
+
+  <!-- Stage 4 -->
+  <div class="arrow"><div class="arrow-label">Stage 4 — Briefing</div><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <div class="box box-agent-exec">
+    <div class="name">📄 Executive Agent</div>
+    <div class="tech">VP-level summary · One paragraph</div>
+  </div>
+
+  <div class="arrow"><div class="arrow-label">all agents call</div><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- Azure AI Foundry -->
+  <div class="box box-foundry">
+    <div class="label">Microsoft Azure AI Foundry</div>
+    <div class="name">🤖 GPT-4.1</div>
+    <div class="tech">Azure OpenAI · JSON mode · Temperature 0.2 · Structured prompts per agent</div>
+  </div>
+
+</div>
+
+<div class="footnote">
+  All agent reasoning powered by <span class="foundry-badge">Azure AI Foundry · GPT-4.1</span><br/>
+  Multi-step reasoning pipeline: Risk → Resource → Scope → Dependency → Score → Impact → Recommend → Summarize<br/>
+  Built for Microsoft Agents League · Reasoning Agents Challenge · June 2026
+</div>
+
+</body>
+</html>

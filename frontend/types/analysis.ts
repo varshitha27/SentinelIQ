@@ -12,6 +12,14 @@ export interface Recommendation {
   effort: "Low" | "Medium" | "High";
 }
 
+export interface TraceStep {
+  agent: string;
+  icon: string;
+  description: string;
+  findings: Record<string, unknown>;
+  status: string;
+}
+
 export interface AnalysisResult {
   health_score: number;
   risk_level: "Low" | "Medium" | "High" | "Critical";
@@ -19,4 +27,5 @@ export interface AnalysisResult {
   risks: Risk[];
   recommendations: Recommendation[];
   executive_summary: string;
+  reasoning_trace: TraceStep[];
 }

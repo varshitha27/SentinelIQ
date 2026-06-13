@@ -40,4 +40,5 @@ async def run_dependency_agent(context: dict) -> dict:
     try:
         return json.loads(response)
     except json.JSONDecodeError:
+        print(f"[DependencyAgent] Failed to parse JSON response: {response[:200]}")
         return {"dependencies": []}

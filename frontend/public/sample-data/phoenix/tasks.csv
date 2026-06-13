@@ -1,0 +1,9 @@
+task,status,due_date,owner
+Authentication,Delayed,2026-06-10,Backend Team
+Payments Integration,Blocked,2026-06-12,Backend Team
+Reporting Module,Blocked,2026-06-08,Frontend Team
+API Gateway Setup,In Progress,2026-06-14,DevOps
+QA Regression Testing,Not Started,2026-06-15,QA Team
+Performance Testing,Not Started,2026-06-16,QA Team
+Security Audit,Delayed,2026-06-11,Security Team
+User Dashboard,In Progress,2026-06-13,Frontend Team

@@ -7,6 +7,7 @@ import type { AnalysisResult } from "@/types/analysis";
 
 export default function Home() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [projectName, setProjectName] = useState("");
   const [loading, setLoading] = useState(false);
 
   return (
@@ -19,19 +20,13 @@ export default function Home() {
               <span className="text-white text-sm font-bold">S</span>
             </div>
             <div>
-              <h1 className="text-white font-semibold text-lg leading-none">
-                SentinelIQ
-              </h1>
-              <p className="text-[#64748b] text-xs mt-0.5">
-                AI Project Failure Prediction
-              </p>
+              <h1 className="text-white font-semibold text-lg leading-none">SentinelIQ</h1>
+              <p className="text-[#64748b] text-xs mt-0.5">AI Project Failure Prediction</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-[#64748b] bg-[#1a1d2e] px-3 py-1 rounded-full border border-[#2a2d3e]">
-              Powered by Azure AI Foundry
-            </span>
-          </div>
+          <span className="text-xs text-[#64748b] bg-[#1a1d2e] px-3 py-1 rounded-full border border-[#2a2d3e]">
+            Powered by Azure AI Foundry
+          </span>
         </div>
       </header>
 
@@ -39,14 +34,21 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-6 py-8">
         {!result ? (
           <UploadPanel
-            onResult={setResult}
+            onResult={(data, name) => {
+              setResult(data);
+              setProjectName(name);
+            }}
             loading={loading}
             setLoading={setLoading}
           />
         ) : (
           <Dashboard
             result={result}
-            onReset={() => setResult(null)}
+            projectName={projectName}
+            onReset={() => {
+              setResult(null);
+              setProjectName("");
+            }}
           />
         )}
       </div>

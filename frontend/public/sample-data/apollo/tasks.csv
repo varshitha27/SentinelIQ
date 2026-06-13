@@ -1,0 +1,9 @@
+task,status,due_date,owner
+User Authentication,Completed,2026-06-05,Backend Team
+Database Schema,Completed,2026-06-04,Backend Team
+API Endpoints,In Progress,2026-06-14,Backend Team
+Frontend Components,In Progress,2026-06-13,Frontend Team
+Unit Tests,In Progress,2026-06-15,QA Team
+Integration Tests,Not Started,2026-06-17,QA Team
+CI/CD Pipeline,Completed,2026-06-06,DevOps
+Staging Deployment,In Progress,2026-06-16,DevOps

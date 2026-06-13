@@ -1,0 +1,15 @@
+task,status,due_date,owner
+Mobile App UI,In Progress,2026-06-18,Frontend Team
+Payment SDK Integration,Blocked,2026-06-13,Backend Team
+KYC Verification Module,Delayed,2026-06-12,Backend Team
+Push Notifications,Not Started,2026-06-19,Mobile Team
+Fraud Detection Engine,Blocked,2026-06-14,Data Science Team
+Admin Dashboard,In Progress,2026-06-17,Frontend Team
+Database Indexing,Delayed,2026-06-11,Backend Team
+iOS App Build,Not Started,2026-06-20,Mobile Team
+Android App Build,Not Started,2026-06-20,Mobile Team
+Penetration Testing,Not Started,2026-06-21,Security Team
+App Store Submission,Not Started,2026-06-22,Mobile Team
+Load Testing,Not Started,2026-06-22,QA Team
+Regulatory Compliance Review,Blocked,2026-06-10,Legal Team
+User Acceptance Testing,Not Started,2026-06-23,QA Team

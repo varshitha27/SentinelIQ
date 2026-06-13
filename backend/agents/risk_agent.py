@@ -44,4 +44,5 @@ async def run_risk_agent(context: dict) -> dict:
     try:
         return json.loads(response)
     except json.JSONDecodeError:
+        print(f"[RiskAgent] Failed to parse JSON response: {response[:200]}")
         return {"risks": []}

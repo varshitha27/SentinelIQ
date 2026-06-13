@@ -41,4 +41,5 @@ async def run_scope_agent(context: dict) -> dict:
     try:
         return json.loads(response)
     except json.JSONDecodeError:
+        print(f"[ScopeAgent] Failed to parse JSON response: {response[:200]}")
         return {"scope_changes": [], "scope_change_count": 0}

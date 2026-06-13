@@ -1,0 +1,13 @@
+date,update
+2026-06-01,Sprint 4 kicked off - mobile team at full capacity and on schedule
+2026-06-02,Payment SDK integration blocked - PCI-DSS certification not yet completed
+2026-06-03,Fraud detection model showing 23% false positive rate in staging - retraining required
+2026-06-04,KYC provider Jumio changed API contract terms - legal review initiated
+2026-06-05,CEO requested cryptocurrency wallet feature added to current sprint scope
+2026-06-06,QA environment instability detected - intermittent test failures blocking regression suite
+2026-06-07,Database indexing task delayed - DBA team pulled to support production incident on another project
+2026-06-08,iOS App Store review timeline not accounted for in release schedule - 7-10 day buffer needed
+2026-06-09,Legal confirmed PCI-DSS process takes 3-4 weeks minimum - release date at risk
+2026-06-10,Regulatory compliance review blocked - waiting on PCI-DSS outcome
+2026-06-11,Referral rewards program and dark mode added to scope by product director
+2026-06-12,Mobile team flagged Android and iOS builds cannot start until payment SDK is unblocked

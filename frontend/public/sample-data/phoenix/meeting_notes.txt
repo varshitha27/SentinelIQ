@@ -1,0 +1,11 @@
+Sprint Planning Meeting - June 3, 2026
+Attendees: PM, Backend Lead, QA Lead, Product Owner
+
+Backend team mentioned the vendor API (payment gateway) has been delayed.
+Vendor confirmed a 12-day delay in delivering the final API documentation.
+QA lead reported team is at 135% capacity - cannot absorb additional test cycles.
+Product owner requested a new reporting feature mid-sprint.
+Security team flagged that the audit timeline conflicts with the release date.
+Backend lead raised concerns about the authentication module - third-party SSO provider
+is requiring additional compliance documentation before granting API access.
+Team agreed to escalate vendor dependency to program level.

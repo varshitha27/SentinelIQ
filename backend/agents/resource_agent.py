@@ -39,4 +39,5 @@ async def run_resource_agent(context: dict) -> dict:
     try:
         return json.loads(response)
     except json.JSONDecodeError:
+        print(f"[ResourceAgent] Failed to parse JSON response: {response[:200]}")
         return {"resource_risks": []}

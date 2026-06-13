@@ -12,6 +12,14 @@ class AnalysisRequest(BaseModel):
     project_name: str = "Project Phoenix"
 
 
+class TraceStep(BaseModel):
+    agent: str
+    icon: str
+    description: str
+    findings: dict
+    status: str
+
+
 class AnalysisResponse(BaseModel):
     health_score: int
     risk_level: str
@@ -19,6 +27,7 @@ class AnalysisResponse(BaseModel):
     risks: list
     recommendations: list
     executive_summary: str
+    reasoning_trace: list[TraceStep]
 
 
 @router.post("/analyze", response_model=AnalysisResponse)

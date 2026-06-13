@@ -66,4 +66,5 @@ async def run_executive_agent(findings: dict) -> dict:
     try:
         return json.loads(response)
     except json.JSONDecodeError:
+        print(f"[ExecutiveAgent] Failed to parse JSON response: {response[:200]}")
         return {"summary": "Analysis complete. Please review the detailed risk report."}

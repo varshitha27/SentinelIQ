@@ -1,0 +1,11 @@
+task,status,due_date,owner
+Core Architecture,Blocked,2026-05-28,Backend Team
+Database Migration,Failed,2026-05-30,Backend Team
+Authentication System,Blocked,2026-05-29,Backend Team
+Payment Gateway,Blocked,2026-06-01,Backend Team
+Frontend App,Not Started,2026-06-10,Frontend Team
+API Integration,Blocked,2026-06-02,Backend Team
+QA Environment,Not Started,2026-06-12,QA Team
+Security Review,Blocked,2026-06-03,Security Team
+Load Testing,Not Started,2026-06-14,QA Team
+Production Deployment,Not Started,2026-06-15,DevOps

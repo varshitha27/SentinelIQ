@@ -1,7 +1,6 @@
 """
 Orchestrator: runs agents sequentially and aggregates results.
-Each agent is independently callable but the orchestrator
-wires them together into a pipeline.
+Also collects a reasoning trace from each agent for transparency.
 """
 import asyncio
 from agents.risk_agent import run_risk_agent
@@ -27,7 +26,9 @@ async def run_analysis(
         "project_name": project_name,
     }
 
-    # Stage 1: Run detection agents (can run concurrently)
+    reasoning_trace = []
+
+    # Stage 1: Detection agents run concurrently
     risk_result, resource_result, scope_result, dependency_result = await asyncio.gather(
         run_risk_agent(project_context),
         run_resource_agent(project_context),
@@ -35,7 +36,36 @@ async def run_analysis(
         run_dependency_agent(project_context),
     )
 
-    # Stage 2: Calculate health score from structured findings
+    reasoning_trace.append({
+        "agent": "Risk Agent",
+        "icon": "🔍",
+        "description": "Scanned tasks and updates for delays, blockers, and critical path risks",
+        "findings": risk_result,
+        "status": "complete",
+    })
+    reasoning_trace.append({
+        "agent": "Resource Agent",
+        "icon": "👥",
+        "description": "Analyzed team capacity, skill gaps, and workload distribution",
+        "findings": resource_result,
+        "status": "complete",
+    })
+    reasoning_trace.append({
+        "agent": "Scope Agent",
+        "icon": "📋",
+        "description": "Detected scope creep indicators and requirement volatility",
+        "findings": scope_result,
+        "status": "complete",
+    })
+    reasoning_trace.append({
+        "agent": "Dependency Agent",
+        "icon": "🔗",
+        "description": "Identified external blockers, vendor risks, and inter-team dependencies",
+        "findings": dependency_result,
+        "status": "complete",
+    })
+
+    # Stage 2: Health score (deterministic, no LLM)
     health_score = calculate_health_score(
         risks=risk_result.get("risks", []),
         resource_risks=resource_result.get("resource_risks", []),
@@ -43,7 +73,18 @@ async def run_analysis(
         dependencies=dependency_result.get("dependencies", []),
     )
 
-    # Combine all findings for downstream agents
+    reasoning_trace.append({
+        "agent": "Scoring Engine",
+        "icon": "📊",
+        "description": "Calculated deterministic health score from weighted risk factors",
+        "findings": {
+            "health_score": health_score,
+            "formula": "100 - (delays×10) - (blockers×15) - (scope_changes×8) - (dependencies×10) - (resource_issues×12)",
+        },
+        "status": "complete",
+    })
+
+    # Combine all findings
     all_findings = {
         "risks": risk_result.get("risks", []),
         "resource_risks": resource_result.get("resource_risks", []),
@@ -56,10 +97,26 @@ async def run_analysis(
     # Stage 3: Impact analysis
     impact_result = await run_impact_agent(all_findings)
 
+    reasoning_trace.append({
+        "agent": "Impact Agent",
+        "icon": "⚡",
+        "description": "Quantified delay probability and estimated delivery impact from combined findings",
+        "findings": impact_result,
+        "status": "complete",
+    })
+
     # Stage 4: Recommendations
     recommendation_result = await run_recommendation_agent({
         **all_findings,
         "impact": impact_result,
+    })
+
+    reasoning_trace.append({
+        "agent": "Recommendation Agent",
+        "icon": "💡",
+        "description": "Generated ranked mitigation actions prioritized by impact and effort",
+        "findings": recommendation_result,
+        "status": "complete",
     })
 
     # Stage 5: Executive summary
@@ -69,7 +126,15 @@ async def run_analysis(
         "recommendations": recommendation_result.get("recommendations", []),
     })
 
-    # Determine risk level from health score
+    reasoning_trace.append({
+        "agent": "Executive Agent",
+        "icon": "📄",
+        "description": "Synthesized all findings into a VP-level executive briefing",
+        "findings": executive_result,
+        "status": "complete",
+    })
+
+    # Risk level from health score
     if health_score >= 80:
         risk_level = "Low"
     elif health_score >= 60:
@@ -79,7 +144,7 @@ async def run_analysis(
     else:
         risk_level = "Critical"
 
-    # Flatten all risks for the response
+    # Flatten all risks
     all_risks = (
         risk_result.get("risks", [])
         + [{"name": r, "severity": "Medium", "category": "Resource"} for r in resource_result.get("resource_risks", [])]
@@ -94,4 +159,5 @@ async def run_analysis(
         "risks": all_risks,
         "recommendations": recommendation_result.get("recommendations", []),
         "executive_summary": executive_result.get("summary", ""),
+        "reasoning_trace": reasoning_trace,
     }

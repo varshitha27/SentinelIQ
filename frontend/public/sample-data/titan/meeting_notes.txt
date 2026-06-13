@@ -1,0 +1,14 @@
+Emergency Project Review - June 8, 2026
+Attendees: CTO, PM, Backend Lead, QA Lead, Product Owner, Security Lead
+
+CRITICAL: Database migration failed and corrupted 3 tables in staging environment.
+Backend team is 3 weeks behind schedule with no clear recovery plan.
+Two senior backend engineers resigned last week - team now has critical skill gap.
+Third-party payment vendor terminated contract due to compliance issues.
+Product owner has added 14 new requirements in the past 2 weeks.
+QA environment has not been provisioned - QA team is completely idle.
+Security audit revealed 4 critical vulnerabilities in the authentication module.
+Infrastructure costs are 240% over budget due to misconfiguration.
+Client has threatened to cancel contract if release date slips further.
+CTO requested immediate escalation to executive team.
+No contingency plan exists for any of the identified blockers.

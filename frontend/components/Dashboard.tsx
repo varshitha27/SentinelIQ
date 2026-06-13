@@ -2,15 +2,17 @@
 
 import type { AnalysisResult, Risk, Recommendation } from "@/types/analysis";
 import { RadialBarChart, RadialBar, ResponsiveContainer, PolarAngleAxis } from "recharts";
-import { ArrowLeft, AlertTriangle, CheckCircle, Clock, TrendingDown, Zap, FileText } from "lucide-react";
+import { ArrowLeft, AlertTriangle, Clock, TrendingDown, Zap, FileText } from "lucide-react";
+import ReasoningTrace from "@/components/ReasoningTrace";
 import clsx from "clsx";
 
 interface Props {
   result: AnalysisResult;
+  projectName: string;
   onReset: () => void;
 }
 
-export default function Dashboard({ result, onReset }: Props) {
+export default function Dashboard({ result, projectName, onReset }: Props) {
   const {
     health_score,
     risk_level,
@@ -18,19 +20,26 @@ export default function Dashboard({ result, onReset }: Props) {
     risks,
     recommendations,
     executive_summary,
+    reasoning_trace,
   } = result;
 
   return (
     <div className="space-y-6">
       {/* Top bar */}
-      <div className="flex items-center justify-between">
-        <button
-          onClick={onReset}
-          className="flex items-center gap-2 text-sm text-[#64748b] hover:text-slate-300 transition"
-        >
-          <ArrowLeft size={16} />
-          New Analysis
-        </button>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={onReset}
+            className="flex items-center gap-2 text-sm text-[#64748b] hover:text-slate-300 transition"
+          >
+            <ArrowLeft size={16} />
+            New Analysis
+          </button>
+          <div>
+            <h2 className="text-white font-bold text-xl leading-tight">{projectName}</h2>
+            <p className="text-[#64748b] text-xs">Risk Analysis Report</p>
+          </div>
+        </div>
         <span className="text-xs text-[#64748b] bg-[#1a1d2e] px-3 py-1 rounded-full border border-[#2a2d3e]">
           Powered by Azure AI Foundry · GPT-4.1
         </span>
@@ -47,15 +56,15 @@ export default function Dashboard({ result, onReset }: Props) {
         />
         <KpiCard
           label="Predicted Delay"
-          value={`${predicted_delay_weeks.toFixed(1)} weeks`}
+          value={predicted_delay_weeks > 0 ? `${predicted_delay_weeks.toFixed(1)} weeks` : "On track"}
           icon={<Clock size={18} />}
-          color="text-amber-400"
+          color={predicted_delay_weeks > 0 ? "text-amber-400" : "text-emerald-400"}
         />
         <KpiCard
           label="Risks Detected"
           value={String(risks.length)}
           icon={<TrendingDown size={18} />}
-          color="text-red-400"
+          color={risks.length > 5 ? "text-red-400" : risks.length > 2 ? "text-amber-400" : "text-emerald-400"}
         />
       </div>
 
@@ -66,10 +75,11 @@ export default function Dashboard({ result, onReset }: Props) {
           <h3 className="text-white font-semibold text-base mb-4 flex items-center gap-2">
             <AlertTriangle size={16} className="text-red-400" />
             Detected Risks
+            <span className="text-xs text-[#64748b] font-normal ml-auto">{risks.length} found</span>
           </h3>
           <div className="space-y-3">
             {risks.length === 0 && (
-              <p className="text-[#64748b] text-sm">No risks detected.</p>
+              <p className="text-[#64748b] text-sm">No significant risks detected.</p>
             )}
             {risks.map((risk, i) => (
               <RiskCard key={i} risk={risk} />
@@ -82,6 +92,7 @@ export default function Dashboard({ result, onReset }: Props) {
           <h3 className="text-white font-semibold text-base mb-4 flex items-center gap-2">
             <Zap size={16} className="text-indigo-400" />
             Recommended Actions
+            <span className="text-xs text-[#64748b] font-normal ml-auto">{recommendations.length} actions</span>
           </h3>
           <div className="space-y-3">
             {recommendations.length === 0 && (
@@ -99,20 +110,20 @@ export default function Dashboard({ result, onReset }: Props) {
         <h3 className="text-white font-semibold text-base mb-3 flex items-center gap-2">
           <FileText size={16} className="text-emerald-400" />
           Executive Summary
-          <span className="text-xs text-[#64748b] font-normal ml-1">
-            VP-level briefing
-          </span>
+          <span className="text-xs text-[#64748b] font-normal ml-1">VP-level briefing</span>
         </h3>
         <p className="text-slate-300 text-sm leading-relaxed">{executive_summary}</p>
       </div>
 
-      {/* Agent pipeline trace */}
-      <AgentPipeline />
+      {/* Reasoning Trace */}
+      {reasoning_trace && reasoning_trace.length > 0 && (
+        <ReasoningTrace trace={reasoning_trace} />
+      )}
     </div>
   );
 }
 
-// ── Sub-components ─────────────────────────────────────────────────────────
+// ── Sub-components ────────────────────────────────────────────────────────────
 
 function HealthScoreCard({ score }: { score: number }) {
   const data = [{ value: score, fill: scoreColor(score) }];
@@ -137,6 +148,9 @@ function HealthScoreCard({ score }: { score: number }) {
           <span className="text-[10px] text-[#64748b]">/ 100</span>
         </div>
       </div>
+      <p className={clsx("text-xs font-semibold mt-1", scoreLabel(score).color)}>
+        {scoreLabel(score).text}
+      </p>
     </div>
   );
 }
@@ -179,26 +193,22 @@ function RiskCard({ risk }: { risk: Risk }) {
       >
         {risk.severity}
       </span>
-      <div>
+      <div className="min-w-0">
         <p className="text-sm font-medium text-slate-200">{risk.name}</p>
         {risk.description && (
           <p className="text-xs text-[#64748b] mt-0.5">{risk.description}</p>
         )}
         {risk.category && (
-          <p className="text-xs text-[#4a4d5e] mt-0.5">{risk.category}</p>
+          <span className="text-[10px] text-[#4a4d5e] bg-[#1a1d2e] border border-[#2a2d3e] px-1.5 py-0.5 rounded mt-1 inline-block">
+            {risk.category}
+          </span>
         )}
       </div>
     </div>
   );
 }
 
-function RecommendationCard({
-  rec,
-  index,
-}: {
-  rec: Recommendation;
-  index: number;
-}) {
+function RecommendationCard({ rec, index }: { rec: Recommendation; index: number }) {
   const priorityStyles = {
     Immediate: "text-red-400 bg-red-950/30 border-red-800/40",
     "Short-term": "text-amber-400 bg-amber-950/30 border-amber-800/40",
@@ -230,48 +240,7 @@ function RecommendationCard({
   );
 }
 
-function AgentPipeline() {
-  const agents = [
-    { name: "Risk Agent", icon: "🔍", desc: "Detects delays & blockers" },
-    { name: "Resource Agent", icon: "👥", desc: "Capacity analysis" },
-    { name: "Scope Agent", icon: "📋", desc: "Scope creep detection" },
-    { name: "Dependency Agent", icon: "🔗", desc: "External blockers" },
-    { name: "Impact Agent", icon: "📊", desc: "Delay prediction" },
-    { name: "Recommendation Agent", icon: "⚡", desc: "Action planning" },
-    { name: "Executive Agent", icon: "📄", desc: "VP briefing" },
-  ];
-
-  return (
-    <div className="bg-[#1a1d2e] border border-[#2a2d3e] rounded-2xl p-6">
-      <div className="flex items-center gap-2 mb-4">
-        <CheckCircle size={16} className="text-emerald-400" />
-        <h3 className="text-white font-semibold text-base">
-          Multi-Agent Pipeline
-        </h3>
-        <span className="text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 px-2 py-0.5 rounded-full ml-1">
-          Complete
-        </span>
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {agents.map((agent, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-2 bg-[#0f1117] border border-[#2a2d3e] rounded-lg px-3 py-2"
-          >
-            <span className="text-base">{agent.icon}</span>
-            <div>
-              <p className="text-xs font-medium text-slate-300">{agent.name}</p>
-              <p className="text-[10px] text-[#64748b]">{agent.desc}</p>
-            </div>
-            <CheckCircle size={12} className="text-emerald-400 ml-1" />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ── Helpers ─────────────────────────────────────────────────────────────────
+// ── Helpers ──────────────────────────────────────────────────────────────────
 
 function riskColor(level: string) {
   switch (level) {
@@ -287,4 +256,11 @@ function scoreColor(score: number): string {
   if (score >= 60) return "#f59e0b";
   if (score >= 40) return "#ef4444";
   return "#dc2626";
+}
+
+function scoreLabel(score: number): { text: string; color: string } {
+  if (score >= 80) return { text: "Healthy", color: "text-emerald-400" };
+  if (score >= 60) return { text: "At Risk", color: "text-amber-400" };
+  if (score >= 40) return { text: "High Risk", color: "text-red-400" };
+  return { text: "Critical", color: "text-red-500" };
 }

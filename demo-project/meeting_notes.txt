@@ -1,0 +1,38 @@
+Project Nova — Sprint 4 Review & Planning
+Date: June 9, 2026
+Attendees: Product Director, Backend Lead, Mobile Lead, Data Science Lead, Legal Counsel, QA Manager
+
+--- MEETING NOTES ---
+
+Legal counsel flagged that the PCI-DSS compliance certification has not been completed.
+Without PCI-DSS, the payment SDK cannot go live. Certification typically takes 3-4 weeks.
+This is a hard blocker on the entire payment flow.
+
+Data science lead reported the fraud detection model is underperforming in staging.
+False positive rate is at 23% — well above the 5% threshold required for launch.
+Model retraining is in progress but requires 2 additional weeks of data collection.
+
+Backend lead confirmed the KYC (Know Your Customer) module is delayed.
+The third-party KYC provider (Jumio) changed their API contract terms last week.
+Legal is reviewing the new terms — estimated 1 week to resolve.
+
+Mobile team raised concerns about iOS App Store review timeline.
+Apple typically takes 7-10 days for fintech app reviews.
+This has not been factored into the current release schedule.
+
+Product director acknowledged that 3 new features were added to scope last week:
+- Cryptocurrency wallet view (requested by CEO)
+- Referral rewards program
+- Dark mode support
+
+QA manager reported the test environment is unstable — 2 out of 5 test runs fail randomly.
+Root cause has not been identified. This is blocking regression testing.
+
+Frontend team is on track for UI and admin dashboard delivery.
+No blockers reported from the frontend side.
+
+Action items:
+- Escalate PCI-DSS certification immediately
+- Engage backup KYC vendor as contingency
+- Remove cryptocurrency wallet from current sprint scope
+- Stabilize QA environment before end of week

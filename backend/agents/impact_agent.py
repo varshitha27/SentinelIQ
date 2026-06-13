@@ -53,6 +53,7 @@ async def run_impact_agent(findings: dict) -> dict:
     try:
         return json.loads(response)
     except json.JSONDecodeError:
+        print(f"[ImpactAgent] Failed to parse JSON response: {response[:200]}")
         return {
             "delay_probability": 0,
             "estimated_delay_weeks": 0.0,

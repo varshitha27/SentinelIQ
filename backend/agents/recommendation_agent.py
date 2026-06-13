@@ -56,4 +56,5 @@ async def run_recommendation_agent(findings: dict) -> dict:
     try:
         return json.loads(response)
     except json.JSONDecodeError:
+        print(f"[RecommendationAgent] Failed to parse JSON response: {response[:200]}")
         return {"recommendations": []}
